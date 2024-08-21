@@ -13,7 +13,7 @@ This repository contains a script to map tickets from ServiceNow into various LT
 ```
 git clone https://github.com/scienceltrs/SN_Mapping.git
 ```
-2. In SN_Mapping/input, add your raw data. Make sure that it's named: **data.csv**.
+2. In SN_Mapping/input, add your [raw data](https://blogs.ubc.ca/scienceltrtraining/servicenow-data/). Make sure that it's named: **data.csv**.
 
 ## Executing Program Using VSCode
 1. Open mapData.py in VSCode then execute the script by pressing the arrow icon, "Run Python Script"
