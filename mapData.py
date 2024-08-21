@@ -18,8 +18,6 @@ for index, row in data.iterrows():
     # Mapped Results #
     if item in ['User Enrolment Management', "Section Management","Standing Deferred Access", "Course Copies", "Admin Access"]:
         data.at[index, "LT Service Category"] = "Process"
-    if service in ["Email Services"]:
-        data.at[index, "LT Service Category"] = "N/A"
     if item in ['Quizzes']:
         data.at[index, "LT Service Category"] = "Assessment"
     if offering in ["Kaltura"]:
