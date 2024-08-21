@@ -13,7 +13,7 @@ This repository contains a script to map tickets from ServiceNow into various LT
 ```
 git clone https://github.com/scienceltrs/SN_Mapping.git
 ```
-2. In SN_Mapping/input, add your [raw data](https://blogs.ubc.ca/scienceltrtraining/servicenow-data/). Make sure that it's named: **data.csv**.
+2. In SN_Mapping/input, add the [cumulative raw data](https://blogs.ubc.ca/scienceltrtraining/servicenow-data/). Make sure that it's named: **data.csv**.
 
 ## Executing Program Using VSCode
 1. Open mapData.py in VSCode then execute the script by pressing the arrow icon, "Run Python Script"
@@ -21,7 +21,7 @@ git clone https://github.com/scienceltrs/SN_Mapping.git
 
 ## Next Steps
 - Copy the file in the output file into an Excel Spreadsheet
-- Filter by "(Blanks)" in the LT Service Category column and then manually complete accordingly
+- Filter by "(Blanks)" in the LT Service Category column and manually complete accordingly
 
 ## Closing Remarks
-While the script will not categorize all tickets, it will significantly reduce the amount of manual labor. Please meet with current supervisor(s) to refine the criteria further.
+While the script will not categorize all tickets, it will significantly reduce the amount of manual labor. Please meet with current supervisor(s) to further refine the criteria.
