@@ -24,7 +24,8 @@ for index, row in data.iterrows():
         "remove student",
         "LT Hub Popup - ",
         "roster sync",
-        "sync roster"
+        "sync roster",
+        "account"
     }
     quizSubstrings = {
         "quiz"
@@ -43,13 +44,13 @@ for index, row in data.iterrows():
         data.at[index, "LT Service Category"] = "Process"
         continue
 
-    if item in ['User Enrolment Management', "Section Management","Standing Deferred Access", "Course Copies", "Admin Access", "Setup", "Course Management", "Settings"]:
+    if item in ['User Enrolment Management', "Section Management","Standing Deferred Access", "Course Copies", "Admin Access", "Setup", "Course Management", "Settings","User Account"]:
         data.at[index, "LT Service Category"] = "Process"
         continue
     else:
         if any(substring.lower() in shortDescrip_lower for substring in processSubstrings):
             data.at[index, "LT Service Category"] = "Process"
-            #i+=1 for testing purposes
+            i+=1 #for testing purposes
             continue
             
         if ("add") in shortDescrip_lower and pd.isna(item):
@@ -61,6 +62,6 @@ for index, row in data.iterrows():
     if any(substring.lower() in shortDescrip_lower for substring in quizSubstrings):
         data.at[index, "LT Service Category"] = "Assessment"
            
-# print(i) for testing purposes
+print(i) #for testing purposes
 #Copy result to output file#        
 data.to_csv(autoOutputPath, index = False)
