@@ -44,7 +44,7 @@ for index, row in data.iterrows():
         data.at[index, "LT Service Category"] = "Process"
         continue
 
-    if item in ['User Enrolment Management', "Section Management","Standing Deferred Access", "Course Copies", "Admin Access", "Setup", "Course Management", "Settings","User Account"]:
+    if item in ['User Enrolment Management', "Section Management","Standing Deferred Access", "Course Copies", "Admin Access", "Setup", "Course Management", "Settings","User Account","Integrations"]:
         data.at[index, "LT Service Category"] = "Process"
         continue
     else:
