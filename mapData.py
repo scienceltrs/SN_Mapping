@@ -92,35 +92,6 @@ for index, row in data.iterrows():
     }
 
     # Mapped Results #
-    if item in assessmentItems:
-        data.at[index, "LT Service Category"] = "Assessment"
-        continue
-
-    if offering in ["Kaltura"] or item in ["Files", "Announcements"]:
-        data.at[index, "LT Service Category"] = "Content Delivery"
-        continue
-
-    if type in ["Password"] or email in ["noreply@google.com", "no-reply@accounts.google.com"] or offering in naOfferings:
-        data.at[index, "LT Service Category"] = "N/A"
-        continue
-
-    if checkSubstring(naSubstrings,shortDescrip_lower):
-        data.at[index, "LT Service Category"] = "N/A"
-        k+=1
-        continue
-    
-    if ("Course Team Request") in shortDescrip:
-        data.at[index, "LT Service Category"] = "Process"
-        continue
-
-    if checkSubstring(quizSubstrings,shortDescrip_lower): 
-        data.at[index, "LT Service Category"] = "Assessment"
-        continue
-
-    if (checkExactSubstring(assessmentExactSubtring,shortDescrip_lower) and checkSubstring(["sync"],shortDescrip_lower)):
-        data.at[index, "LT Service Category"] = "Assessment"
-        continue    
-
     if item in processItems:
         data.at[index, "LT Service Category"] = "Process"
         continue
@@ -138,11 +109,37 @@ for index, row in data.iterrows():
 
         if (checkSubstring(["access"], shortDescrip_lower)and item not in ["Files"]):
             data.at[index, "LT Service Category"] = "Process"
+            print(shortDescrip_lower)
             continue 
 
-# print("this is j:", j) #for testing purposes
-# print("this is i:", i) #for testing purposes
-# print("this is k:", k) #for testing purposes
+    if item in assessmentItems:
+        data.at[index, "LT Service Category"] = "Assessment"
+        continue
+
+    if offering in ["Kaltura"] or item in ["Files", "Announcements"]:
+        data.at[index, "LT Service Category"] = "Content Delivery"
+        continue
+
+    if type in ["Password"] or email in ["noreply@google.com", "no-reply@accounts.google.com"] or offering in naOfferings or checkSubstring(naSubstrings,shortDescrip_lower):
+        data.at[index, "LT Service Category"] = "N/A"
+        continue
+    
+    if ("Course Team Request") in shortDescrip:
+        data.at[index, "LT Service Category"] = "Process"
+        continue
+
+    if checkSubstring(quizSubstrings,shortDescrip_lower): 
+        data.at[index, "LT Service Category"] = "Assessment"
+        continue
+
+    if (checkExactSubstring(assessmentExactSubtring,shortDescrip_lower) and checkSubstring(["sync"],shortDescrip_lower)):
+        data.at[index, "LT Service Category"] = "Assessment"
+        continue    
+
+
+print("this is j:", j) #for testing purposes
+print("this is i:", i) #for testing purposes
+print("this is k:", k) #for testing purposes
 
 
 ######################
