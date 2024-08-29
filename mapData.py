@@ -2,22 +2,40 @@ import pandas as pd
 import csv
 from pathNames import rawDataPath, autoOutputPath
 
+######################
+#### DO NOT EDIT ####
+######################
+def checkSubstring(a,b):
+    return any(x.lower() in b for x in a)
+
+def checkExactSubstring(a,b):
+    return any(x.lower() in b.split() for x in a)
+
 data = pd.read_csv(rawDataPath, encoding='latin1')
 
 data["LT Service Category"] = ""
 
-data.sort_values(['Incident #'],axis = 0, inplace = True)
-i = 0
+i = 0   # for testing purposes
+j = 0   # for testing purposes
+k = 0   # for testing purposes
+
+
+
 for index, row in data.iterrows(): 
     # Possible conditions to check #
-    type = row["Type"]
-    service = row["Service (u_service)"]
-    offering = row["Offering"]
-    item = row["Item"]
-    email = row["Preferred Email"]
-    shortDescrip = row["Short description"]
-    shortDescrip_lower = shortDescrip.lower()
-    processSubstrings = {
+    type                = row["Type"]
+    service             = row["Service (u_service)"]
+    offering            = row["Offering"]
+    item                = row["Item"]
+    email               = row["Preferred Email"]
+    shortDescrip        = row["Short description"]
+    shortDescrip_lower  = shortDescrip.lower()
+
+
+    ############################
+    #### START EDITING HERE ####
+    ############################
+    processSubstrings   = {
         "SD",
         "LT Hub Service Request - ",
         "Add instructor",
@@ -25,43 +43,110 @@ for index, row in data.iterrows():
         "LT Hub Popup - ",
         "roster sync",
         "sync roster",
-        "account"
+        "account",
+        "import",
+        "copy",
+        "roster",
+        "create",
+        "integration",
+        "setup",
+        "sync",
+        "set up",
+        "setting",
+        "creating",
+        "duplicat", #captures both duplicate + duplicating
     }
-    quizSubstrings = {
+    quizSubstrings          = {
         "quiz"
     }
+    naSubstrings            = {
+        "receipt"
+    }
+    assessmentExactSubtring = {
+        "grade",
+        "grades",
+        "gradebook"
+    }
+    processItems            = {
+        'User Enrolment Management', 
+        "Section Management",
+        "Standing Deferred Access",
+        "Course Copies", 
+        "Admin Access", 
+        "Setup", 
+        "Course Management", 
+        "Settings",
+        "User Account",
+        "Integrations"
+        
+    }
+    assessmentItems        = {
+        'Quizzes', 
+        'Grades', 
+        'Assignments'
+    }
+    naOfferings            = {
+        "Adapter", 
+        "Offboarding", 
+        "Not Listed"
+    }
+
     # Mapped Results #
-    if item in ['Quizzes', 'Grades', 'Assignments']:
+    if item in assessmentItems:
         data.at[index, "LT Service Category"] = "Assessment"
         continue
+
     if offering in ["Kaltura"] or item in ["Files", "Announcements"]:
         data.at[index, "LT Service Category"] = "Content Delivery"
         continue
-    if type in ["Password"] or email in ["noreply@google.com", "no-reply@accounts.google.com"] or offering in ["Adapter", "Offboarding"]:
+
+    if type in ["Password"] or email in ["noreply@google.com", "no-reply@accounts.google.com"] or offering in naOfferings:
         data.at[index, "LT Service Category"] = "N/A"
         continue
+
+    if checkSubstring(naSubstrings,shortDescrip_lower):
+        data.at[index, "LT Service Category"] = "N/A"
+        k+=1
+        continue
+    
     if ("Course Team Request") in shortDescrip:
         data.at[index, "LT Service Category"] = "Process"
         continue
 
-    if item in ['User Enrolment Management', "Section Management","Standing Deferred Access", "Course Copies", "Admin Access", "Setup", "Course Management", "Settings","User Account","Integrations"]:
+    if checkSubstring(quizSubstrings,shortDescrip_lower): 
+        data.at[index, "LT Service Category"] = "Assessment"
+        continue
+
+    if (checkExactSubstring(assessmentExactSubtring,shortDescrip_lower) and checkSubstring(["sync"],shortDescrip_lower)):
+        data.at[index, "LT Service Category"] = "Assessment"
+        continue    
+
+    if item in processItems:
         data.at[index, "LT Service Category"] = "Process"
         continue
+
     else:
-        if any(substring.lower() in shortDescrip_lower for substring in processSubstrings):
+        if checkSubstring(processSubstrings, shortDescrip_lower):
             data.at[index, "LT Service Category"] = "Process"
-            i+=1 #for testing purposes
+            #print(shortDescrip_lower) #for testing purposes
+            j+=1 #for testing purposes
             continue
             
-        if ("add") in shortDescrip_lower and pd.isna(item):
+        if (checkSubstring(["add"], shortDescrip_lower) and pd.isna(item)):
             data.at[index, "LT Service Category"] = "Process"
             continue
-        if ("access") in shortDescrip_lower and item not in ["Files"]:
+
+        if (checkSubstring(["access"], shortDescrip_lower)and item not in ["Files"]):
             data.at[index, "LT Service Category"] = "Process"
-            continue
-    if any(substring.lower() in shortDescrip_lower for substring in quizSubstrings):
-        data.at[index, "LT Service Category"] = "Assessment"
-           
-print(i) #for testing purposes
+            continue 
+
+# print("this is j:", j) #for testing purposes
+# print("this is i:", i) #for testing purposes
+# print("this is k:", k) #for testing purposes
+
+
+######################
+#### DO NOT EDIT ####
+######################
 #Copy result to output file#        
 data.to_csv(autoOutputPath, index = False)
